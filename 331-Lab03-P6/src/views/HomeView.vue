@@ -20,7 +20,7 @@ export default {
     };
   },
   created() {
-    axios.get('https://api.instantwebtools.net/v1/passenger')
+    axios.get('https://api.instantwebtools.net/v1/passenger?page=0&size=10')
       .then(response => {
         this.passengers = response.data.data;
       })
