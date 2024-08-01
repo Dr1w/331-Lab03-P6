@@ -3,7 +3,6 @@ import HomeView from '../views/HomeView.vue';
 import PassengerDetailView from '../views/PassengerDetailView.vue';
 import AirlineDetailView from '../views/AirlineDetailView.vue';
 import NotFoundView from '../views/NotFoundView.vue';
-import ResourceNotFoundView from '../views/ResourceNotFoundView.vue';
 
 const routes = [
   {
@@ -27,11 +26,6 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFoundView
-  },
-  {
-    path: '/resource-not-found',
-    name: 'ResourceNotFound',
-    component: ResourceNotFoundView
   }
 ];
 

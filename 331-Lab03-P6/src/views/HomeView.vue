@@ -9,27 +9,24 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
-import { getPassengers } from '../services/apiService';
-import { Passenger } from '../type';
+<script>
+import axios from 'axios';
 
-export default defineComponent({
+export default {
   name: 'HomeView',
-  setup() {
-    const passengers = ref<Passenger[]>([]);
-
-    onMounted(async () => {
-      try {
-        passengers.value = await getPassengers();
-      } catch (error) {
-        console.error("There was an error!", error);
-      }
-    });
-
+  data() {
     return {
-      passengers
+      passengers: []
     };
+  },
+  created() {
+    axios.get('https://api.instantwebtools.net/v1/passenger?page=0&size=10')
+      .then(response => {
+        this.passengers = response.data.data;
+      })
+      .catch(error => {
+        console.error("There was an error!", error);
+      });
   }
-});
+};
 </script>
