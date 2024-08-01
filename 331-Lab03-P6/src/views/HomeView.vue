@@ -1,32 +1,45 @@
 <template>
   <div>
     <h1>Passenger List</h1>
-    <ul>
+    <div v-if="error" class="error">{{ error }}</div>
+    <ul v-else>
       <li v-for="passenger in passengers" :key="passenger._id">
-        <router-link :to="'/passenger/' + passenger._id">{{ passenger.name }}</router-link>
+        <router-link :to="{ name: 'PassengerDetail', params: { id: passenger._id } }">
+          {{ passenger.name }}
+        </router-link>
       </li>
     </ul>
   </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent, ref, onMounted } from 'vue';
+import { getPassengers } from '@/services/apiService';
 
-export default {
+export default defineComponent({
   name: 'HomeView',
-  data() {
-    return {
-      passengers: []
-    };
+  setup() {
+    const passengers = ref<any[]>([]);
+    const error = ref<string | null>(null);
+
+    onMounted(async () => {
+      try {
+        const response = await getPassengers();
+        passengers.value = response.data.data; // 处理分页数据，确保根据实际 API 响应结构进行调整
+      } catch (err) {
+        error.value = (err as Error).message;
+        console.error("There was an error!", err);
+      }
+    });
+
+    return { passengers, error };
   },
-  created() {
-    axios.get('https://api.instantwebtools.net/v1/passenger?page=0&size=10')
-      .then(response => {
-        this.passengers = response.data.data;
-      })
-      .catch(error => {
-        console.error("There was an error!", error);
-      });
-  }
-};
+});
 </script>
+
+<style scoped>
+.error {
+  color: red;
+  font-weight: bold;
+}
+</style>
