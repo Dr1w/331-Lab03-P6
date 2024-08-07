@@ -11,6 +11,8 @@
         <img :src="airline.logo" alt="Airline Logo" v-if="airline.logo" />
       </div>
       <router-view />
+      <!-- 6.1 添加编辑按钮 -->
+      <button @click="editPassenger">Edit Passenger</button>
     </div>
     <div v-else>
       Loading or no data available...
@@ -49,7 +51,12 @@ export default defineComponent({
       }
     });
 
-    return { passenger, airline };
+    // 6.1 添加编辑函数
+    const editPassenger = () => {
+      router.push({ name: 'EditPassenger', params: { id: route.params.id } });
+    };
+
+    return { passenger, airline, editPassenger };
   },
 });
 </script>
