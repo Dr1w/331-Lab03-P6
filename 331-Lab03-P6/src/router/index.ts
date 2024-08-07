@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import PassengerDetailView from '../views/PassengerDetailView.vue';
 import AirlineDetailView from '../views/AirlineDetailView.vue';
 import NotFoundView from '../views/NotFoundView.vue';
+import EditView from '../views/EditView.vue'; // 6.1 引入 EditView
 import NProgress from 'nprogress'; // 6.3 引入 nprogress
 import 'nprogress/nprogress.css'; // 6.3 引入 nprogress 样式
 
@@ -23,6 +24,11 @@ const routes = [
         component: AirlineDetailView
       }
     ]
+  },
+  {
+    path: '/edit',
+    name: 'EditView',
+    component: EditView // 6.1 添加 EditView 路由
   },
   {
     path: '/:pathMatch(.*)*',
