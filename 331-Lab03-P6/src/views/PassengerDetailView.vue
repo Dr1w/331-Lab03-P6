@@ -13,6 +13,8 @@
       <router-view />
       <!-- 6.1 添加编辑按钮 -->
       <button @click="editPassenger">Edit Passenger</button>
+      <!-- 6.2 闪烁消息 -->
+      <div v-if="flashMessage" class="flash-message">{{ flashMessage }}</div>
     </div>
     <div v-else>
       Loading or no data available...
@@ -32,6 +34,7 @@ export default defineComponent({
     const router = useRouter();
     const passenger = ref<any>(null);
     const airline = ref<any>(null);
+    const flashMessage = ref<string | null>(null);
 
     onMounted(async () => {
       const passengerId = route.params.id as string;
@@ -53,10 +56,23 @@ export default defineComponent({
 
     // 6.1 添加编辑函数
     const editPassenger = () => {
-      router.push({ name: 'EditPassenger', params: { id: route.params.id } });
+      flashMessage.value = 'Start Update In Progress'; // 6.2 设置闪烁消息
+      setTimeout(() => {
+        flashMessage.value = null;
+        router.push({ name: 'home' });
+      }, 5000); // 5秒后重定向到 HomeView
     };
 
-    return { passenger, airline, editPassenger };
+    return { passenger, airline, flashMessage, editPassenger };
   },
 });
 </script>
+
+<style scoped>
+.flash-message {
+  background-color: yellow;
+  padding: 10px;
+  margin-top: 20px;
+  text-align: center;
+}
+</style>
