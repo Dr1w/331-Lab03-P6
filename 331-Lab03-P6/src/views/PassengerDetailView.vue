@@ -11,7 +11,7 @@
         <img :src="airline.logo" alt="Airline Logo" v-if="airline.logo" />
       </div>
       <router-view />
-      <!-- 6.1 添加编辑按钮 -->
+      <!-- 6.1 修改编辑按钮 -->
       <button @click="editPassenger">Edit</button>
     </div>
     <div v-else>
@@ -21,40 +21,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getPassengerById, getAirlineById } from '@/services/apiService';
+import { usePassengerStore } from '@/stores/passenger';
 
 export default defineComponent({
   name: 'PassengerDetailView',
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const passenger = ref<any>(null);
-    const airline = ref<any>(null);
+    const passengerStore = usePassengerStore();
 
-    onMounted(async () => {
-      const passengerId = route.params.id as string;
+    const passenger = passengerStore.passenger;
+    const airline = passengerStore.airline;
 
-      try {
-        const passengerResponse = await getPassengerById(passengerId);
-        passenger.value = passengerResponse.data;
-
-        if (passenger.value.airline.length > 0) {
-          const airlineId = passenger.value.airline[0]._id;
-          const airlineResponse = await getAirlineById(airlineId);
-          airline.value = airlineResponse.data;
-        }
-      } catch (error) {
-        console.error("There was an error!", error);
-        router.push({ name: 'NotFound' });
-      }
-    });
-
-      // 6.1 修改编辑函数
-      const editPassenger = () => {
+    // 6.1 修改编辑函数
+    const editPassenger = () => {
       router.push({ name: 'EditView' });
     };
+
     return { passenger, airline, editPassenger };
   },
 });
