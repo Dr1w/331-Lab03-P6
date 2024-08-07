@@ -17,6 +17,8 @@
     <div v-else>
       Loading or no data available...
     </div>
+    <!-- 6.5 添加返回按钮 -->
+    <button @click="goBack">Back</button>
   </div>
 </template>
 
@@ -39,8 +41,12 @@ export default defineComponent({
     const editPassenger = () => {
       router.push({ name: 'EditView' });
     };
+    // 6.5 返回函数
+    const goBack = () => {
+      router.back();
+    };
 
-    return { passenger, airline, editPassenger };
+    return { passenger, airline, editPassenger , goBack };
   },
 });
 </script>

@@ -5,6 +5,8 @@
       <button @click="editPassenger">Edit Passenger</button>
       <!-- 6.2 显示闪烁消息 -->
       <div v-if="flashMessage" class="flash-message">{{ flashMessage }}</div>
+        <!-- 6.5 添加返回按钮 -->
+        <button @click="goBack">Back</button>
     </div>
   </template>
   
@@ -26,8 +28,10 @@
           router.push({ name: 'home' }); // 跳转到 HomeView
         }, 5000); // 5秒后重定向
       };
-  
-      return { editPassenger, flashMessage };
+      const goBack = () => {
+      router.back();
+    };
+      return { editPassenger, flashMessage, goBack };
     },
   });
   </script>
